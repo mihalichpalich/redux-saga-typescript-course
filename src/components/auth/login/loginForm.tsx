@@ -1,9 +1,9 @@
 import React, { FormEvent } from 'react';
 import { Form, Icon, Input, Button, Checkbox } from 'antd';
 import { FormComponentProps } from 'antd/es/form';
+import { Link } from 'react-router-dom';
 
 import './styles.scss';
-import { Link } from 'react-router-dom';
 import { ILoginArguments } from '../../../types/handlers/ILoginArguments';
 
 interface ILoginFormProps extends FormComponentProps {
@@ -11,22 +11,24 @@ interface ILoginFormProps extends FormComponentProps {
     handleError(error: any): void,
 }
 
-function LoginForm(props: ILoginFormProps) {
-    function onSubmit(e: FormEvent): void {
+const LoginForm = ({form, handleError, handleSubmit}: ILoginFormProps) => {
+    const onSubmit = (e: FormEvent): void => {
         e.preventDefault();
-        props.form.validateFields((error, values) => {
+
+        form.validateFields((error, values) => {
             if (error) {
-                return props.handleError(error);
+                return handleError(error);
             }
-            props.handleSubmit(values);
+            handleSubmit(values);
         });
-    }
+    };
 
     return (
         <Form onSubmit={onSubmit} className="login-form">
             <h3 className="main-label">LOG IN</h3>
+
             <Form.Item>
-                {props.form.getFieldDecorator('email', {
+                {form.getFieldDecorator('email', {
                     rules: [{ required: true, message: 'Please add your email!' }],
                 })(
                     <Input
@@ -36,8 +38,9 @@ function LoginForm(props: ILoginFormProps) {
                     />,
                 )}
             </Form.Item>
+
             <Form.Item>
-                {props.form.getFieldDecorator('password', {
+                {form.getFieldDecorator('password', {
                     rules: [{ required: true, message: 'Please add your Password!' }],
                 })(
                     <Input
@@ -47,21 +50,25 @@ function LoginForm(props: ILoginFormProps) {
                     />,
                 )}
             </Form.Item>
+
             <Form.Item>
-                {props.form.getFieldDecorator('remember', {
+                {form.getFieldDecorator('remember', {
                     valuePropName: 'checked',
                     initialValue: true,
                 })(<Checkbox>Remember me</Checkbox>)}
+
                 <Link to="/forgot" className="login-form-forgot">
                     Forgot password
                 </Link>
+
                 <Button type="primary" htmlType="submit" className="login-form-button">
                     Log in
                 </Button>
+
                 Or <Link to="/signup">register now!</Link>
             </Form.Item>
         </Form>
     )
-}
+};
 
 export default Form.create<ILoginFormProps>({ name: 'LoginForm' })(LoginForm);

@@ -3,10 +3,12 @@ import { Spin } from 'antd';
 
 import './styles.scss';
 
-export default function Fallback() {
+const Fallback = () => {
     return (
         <div className="router-lazy-spin">
             <Spin tip="Loading..." />
         </div>
     )
-}
+};
+
+export default Fallback

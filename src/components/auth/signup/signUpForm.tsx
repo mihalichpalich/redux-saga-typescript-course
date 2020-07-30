@@ -1,8 +1,8 @@
 import React, { FormEvent } from 'react';
 import { Form, Icon, Input, Button, Select } from 'antd';
+import { Link } from 'react-router-dom';
 
 import './styles.scss';
-import { Link } from 'react-router-dom';
 import { FormComponentProps } from 'antd/lib/form';
 
 const { Option } = Select;
@@ -12,22 +12,24 @@ interface ISignUpFormProps extends FormComponentProps {
     handleError(error: any): void;
 }
 
-export default Form.create<ISignUpFormProps>()(function SignUpForm(props: ISignUpFormProps) {
-    function onSubmit(e: FormEvent): void {
+const SignUpForm = ({form, handleError, handleSubmit}: ISignUpFormProps) => {
+    const onSubmit = (e: FormEvent): void => {
         e.preventDefault();
-        props.form.validateFields((error, values) => {
+
+        form.validateFields((error, values) => {
             if (error) {
-                return props.handleError(error);
+                return handleError(error);
             }
-            props.handleSubmit(values);
+            handleSubmit(values);
         });
-    }
+    };
 
     return (
         <Form onSubmit={onSubmit} className="signup-form" layout="horizontal">
             <h3 className="main-label">SIGN UP</h3>
+
             <Form.Item>
-                {props.form.getFieldDecorator('firstName', {
+                {form.getFieldDecorator('firstName', {
                     rules: [{ required: true, message: 'Please add your First Name!' }],
                 })(
                     <Input
@@ -37,8 +39,9 @@ export default Form.create<ISignUpFormProps>()(function SignUpForm(props: ISignU
                     />,
                 )}
             </Form.Item>
+
             <Form.Item>
-                {props.form.getFieldDecorator('lastName', {
+                {form.getFieldDecorator('lastName', {
                     rules: [{ required: true, message: 'Please add your Last Name!' }],
                 })(
                     <Input
@@ -48,8 +51,9 @@ export default Form.create<ISignUpFormProps>()(function SignUpForm(props: ISignU
                     />,
                 )}
             </Form.Item>
+
             <Form.Item>
-                {props.form.getFieldDecorator('gender', {
+                {form.getFieldDecorator('gender', {
                     rules: [{ required: true, message: 'Please select your gender!' }],
                 })(
                     <Select placeholder="Select gender">
@@ -58,8 +62,9 @@ export default Form.create<ISignUpFormProps>()(function SignUpForm(props: ISignU
                     </Select>,
                 )}
             </Form.Item>
+
             <Form.Item>
-                {props.form.getFieldDecorator('email', {
+                {form.getFieldDecorator('email', {
                     rules: [{ required: true, message: 'Please add your email!' }],
                 })(
                     <Input
@@ -69,8 +74,9 @@ export default Form.create<ISignUpFormProps>()(function SignUpForm(props: ISignU
                     />,
                 )}
             </Form.Item>
+
             <Form.Item>
-                {props.form.getFieldDecorator('password', {
+                {form.getFieldDecorator('password', {
                     rules: [{ required: true, message: 'Please add your Password!' }],
                 })(
                     <Input
@@ -80,8 +86,9 @@ export default Form.create<ISignUpFormProps>()(function SignUpForm(props: ISignU
                     />,
                 )}
             </Form.Item>
+
             <Form.Item>
-                {props.form.getFieldDecorator('confirmPassword', {
+                {form.getFieldDecorator('confirmPassword', {
                     rules: [{ required: true, message: 'Please confirm your Password!' }],
                 })(
                     <Input
@@ -91,12 +98,16 @@ export default Form.create<ISignUpFormProps>()(function SignUpForm(props: ISignU
                     />,
                 )}
             </Form.Item>
+
             <Form.Item>
                 <Button type="primary" htmlType="submit" className="signup-form-button">
                     Sign Up
                 </Button>
+
                 Or <Link to="/">Log In</Link>
             </Form.Item>
         </Form>
     )
-})
+};
+
+export default Form.create<ISignUpFormProps>()(SignUpForm)
