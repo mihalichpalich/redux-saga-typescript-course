@@ -4,11 +4,12 @@ import { Link } from 'react-router-dom';
 
 import './styles.scss';
 import { FormComponentProps } from 'antd/lib/form';
+import {ISignUp} from "../../../types";
 
 const { Option } = Select;
 
 interface ISignUpFormProps extends FormComponentProps {
-    handleSubmit(values: any): void;
+    handleSubmit(values: ISignUp): void;
     handleError(error: any): void;
 }
 
@@ -22,6 +23,14 @@ const SignUpForm = ({form, handleError, handleSubmit}: ISignUpFormProps) => {
             }
             handleSubmit(values);
         });
+    };
+
+    const compareToFirstPassword = (rule: any, value: string, callback: Function) => {
+        if (value && value !== form.getFieldValue('password')) {
+            callback('Two passwords that you enter is inconsistent!');
+        } else {
+            callback();
+        }
     };
 
     return (
@@ -89,7 +98,10 @@ const SignUpForm = ({form, handleError, handleSubmit}: ISignUpFormProps) => {
 
             <Form.Item>
                 {form.getFieldDecorator('confirmPassword', {
-                    rules: [{ required: true, message: 'Please confirm your Password!' }],
+                    rules: [
+                        { required: true, message: 'Please confirm your Password!' },
+                        { validator: compareToFirstPassword }
+                    ],
                 })(
                     <Input
                         prefix={<Icon type="lock" theme="filled" style={{ color: 'rgba(0,0,0,.25)' }} />}

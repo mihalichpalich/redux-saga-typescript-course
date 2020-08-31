@@ -12,6 +12,6 @@ export const UserActions = {
     Type,
 
     setUser,
-}
+};
 
 export type UserActions = Omit<typeof UserActions, 'Type'>;

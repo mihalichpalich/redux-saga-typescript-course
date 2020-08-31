@@ -4,8 +4,8 @@ import { Router, Route, Switch, RouteProps } from 'react-router-dom';
 import 'antd/dist/antd.css';
 
 import { history } from '../redux/store';
-import { IRootReducer } from '../redux/reducers/state';
-import { IAuth } from '../types/auth';
+import { IRootState } from '../redux/reducers/state';
+import { IAuth } from '../types';
 import Fallback from '../components/common/fallback';
 
 const HomePage = React.lazy(() => import('../pages/home'));
@@ -39,7 +39,7 @@ const MainRouter = ({auth}: IMainRouterProps) => {
     );
 };
 
-const mapStateToProps = (state: IRootReducer): IMainRouterProps => ({
+const mapStateToProps = (state: IRootState): IMainRouterProps => ({
     auth: state.auth,
 });
 
